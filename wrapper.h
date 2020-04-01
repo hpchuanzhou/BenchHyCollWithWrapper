@@ -8,11 +8,11 @@
 
 #include <mpi.h>
 
-/** @brief Definition of the splited communicators 
+/** @brief Definition of the split communicators 
 */
 struct comm_package
 {
-	MPI_Comm shmem_comm; /* shard-memory communicator */
+	MPI_Comm shmem_comm; /* shared-memory communicator */
 	MPI_Comm bridge_comm; /* bridge communicator */
 	int      shmemcomm_size; /* the size of the shared-memory communicator */
 	int      bridgecomm_size; /* the size of the bridge communicator */
@@ -33,7 +33,7 @@ double count;
 
 /* -- The common wrapper functions that are invoked before the execution of the collective operations -- */
 
-/** @brief Two-level spliting of the given parent communicator.
+/** @brief Two-level splitting of the given parent communicator.
 *   @param[in]  p_comm Parent communicator
 *   @param[out] comm_handle an instance of struct comm_handle
 */
@@ -66,10 +66,10 @@ void Wrapper_MPI_ShmemBridgeComm_create(MPI_Comm p_comm, struct comm_package* co
 }
 
 /** @brief Allocation of shared-memory.
-*   @param[in] msize Number of elments
+*   @param[in] msize Number of elements
 *   @param[in] bsize Size of an element in bytes
 *   @param[in] flag  Differentiation between collective operations
-*   @param[in] comm_handle Splitted communicators
+*   @param[in] comm_handle Split communicators
 *   @param[out] shmem_addir The beginning address of the allocated shared-memory
 *   @param[out] winPtr An MPI window object
 */
@@ -208,7 +208,7 @@ void Wrapper_Hy_Allgather(myType* start_addr, myType* local_addr, int msize, MPI
 /** @brief Create two absolute-to-relative rank translation tables
 *   @param[in] p_comm Define the absolute rank in p_comm
 *   @param[in] comm_handle Store the shared-memory and bridge communicators derived from p_comm
-*   @param[out] shmem_transtable Map absolute rank in the p_comm to relative rank in the shared-memory communciator
+*   @param[out] shmem_transtable Map absolute rank in the p_comm to relative rank in the shared-memory communicator
 *   @param[out] bridge_transtable Map absolute rank in the p_comm to relative rank in the bridge communicator
 */
 void Wrapper_Get_transtable(MPI_Comm p_comm, const struct comm_package* comm_handle, int **shmem_transtable,
@@ -278,7 +278,6 @@ void Wrapper_Hy_bcast(myType** bcast_addr, myType* start_addr, int msize,
 *   All parameters except result_addr are input
 *   @param[out] result_addr Returned address storing the reduced result
 */
-// This is for the operation of summation (MPI_SUM)
 template <class myType>
 void Wrapper_Hy_Allreduce(myType* start_addr, myType** result_addr, int sharedmem_rank, int msize,
 	MPI_Datatype data_type, MPI_Op op, struct comm_package* comm_handle, MPI_Win win)
@@ -290,6 +289,7 @@ void Wrapper_Hy_Allreduce(myType* start_addr, myType** result_addr, int sharedme
 	{
 		if (threshold_size <= SWITCH_MSG_BYTESIZE)
 		{ // method 2: serial but not sync
+		  // This is for the operation of summation (MPI_SUM)
 			MPI_Barrier(comm_handle->shmem_comm);
 			double* sum_addr;
 			if (sharedmem_rank == 0)
