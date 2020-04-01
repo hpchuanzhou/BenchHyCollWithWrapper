@@ -1,5 +1,5 @@
 /******************************************************************************************************************
-*       Title:          Micro-benchmark with broadcast based on the wrapper interfaces
+*       Title:          Micro-benchmark with hybrid MPI+MPI context-based broadcast based on the wrapper interfaces
 *       Date:           01/04/2020
 *       Authors:        Huan Zhou (huan.zhou@hlrs.de)
 *       Institute:      High Performance Computing Center Stuttgart (HLRS)
