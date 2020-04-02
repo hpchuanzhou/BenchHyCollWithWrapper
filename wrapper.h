@@ -247,7 +247,7 @@ void Wrapper_Get_transtable(MPI_Comm p_comm, const struct comm_package* comm_han
 *   @param[out] bcast_addr Returned address storing the broadcast data
 */
 template <class myType>
-void Wrapper_Hy_bcast(myType** bcast_addr, myType* start_addr, int msize,
+void Wrapper_Hy_Bcast(myType** bcast_addr, myType* start_addr, int msize,
 	int* shmem_transtable, int* bridge_transtable, MPI_Datatype data_type, int root, struct comm_package* comm_handle)
 {
 	*bcast_addr = NULL;
