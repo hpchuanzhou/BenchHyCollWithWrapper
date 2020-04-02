@@ -69,7 +69,7 @@ int main (int argc, char *argv[])
         }
 
         for (i = 0; i < skip; i++)
-            Wrapper_Hy_bcast<double>(&r_buf, s_buf, msg, shmem_transtable,
+            Wrapper_Hy_Bcast<double>(&r_buf, s_buf, msg, shmem_transtable,
                bridge_transtable, MPI_DOUBLE, 0, &comm_handle);
 
         t_total_dur = 0.0;
@@ -77,7 +77,7 @@ int main (int argc, char *argv[])
         {
             t_start = MPI_Wtime();
             for (j = 0; j < inner_loop; j++) {
-                Wrapper_Hy_bcast<double>(&r_buf, s_buf, msg, shmem_transtable,
+                Wrapper_Hy_Bcast<double>(&r_buf, s_buf, msg, shmem_transtable,
                    bridge_transtable, MPI_DOUBLE, 0, &comm_handle);
             }
             t_end = MPI_Wtime();
